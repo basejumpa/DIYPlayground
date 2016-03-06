@@ -76,7 +76,7 @@ void loop() {
            int g = number >> 8 & 0xFF;           
            int b = number & 0xFF;
 
-           strip.setBrightness(255);
+           strip.setBrightness(128);
            for(int i = 0; i < strip.numPixels(); ++i){
               strip.setPixelColor(i, r, g, b);  
            }
