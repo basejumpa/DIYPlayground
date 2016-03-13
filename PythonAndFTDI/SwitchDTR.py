@@ -45,8 +45,8 @@ sys.stderr.flush()
 while True:
     c = ser.read()
     if len(c) == 0:
-        sys.stderr.write(" TIMEOUT\r\n%s:1:5: error: Timeout occurred. Didn't receive any character for more than %i seconds.\r\n" % (__file__, ser.timeout))
         ser.close()
+        sys.stderr.write(" TIMEOUT\r\n%s:1:5: error: Timeout occurred. Didn't receive any character for more than %i seconds.\r\n" % (__file__, ser.timeout))
         exit(1)
     elif c == 'Z':
         ser.close()
