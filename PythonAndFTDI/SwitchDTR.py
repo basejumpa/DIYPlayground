@@ -49,13 +49,11 @@ while True:
         ser.close()
         exit(1)
     elif c == 'Z':
+        ser.close()
         sys.stderr.write(" Finished\r\n")
         sys.stderr.flush()
         break
-
-# Close connection
-ser.close()
-
+exit(0)
 
 # Thanks to:
 # * http://stackoverflow.com/questions/2438848/set-serial-port-pin-high-using-python
