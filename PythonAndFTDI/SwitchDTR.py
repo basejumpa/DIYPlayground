@@ -6,16 +6,16 @@ from subprocess import Popen, PIPE
 
 # Read out assigned com port
 port = ''
-process = Popen(["reg", "query", "HKLM\\HARDWARE\\DEVICEMAP\\SERIALCOMM", "/v", "\\Device\\VCP0"], stdout=PIPE)
+process = Popen(["reg", "query", "HKLM\\HARDWARE\\DEVICEMAP\\SERIALCOMM", "/v", "\\Device\\VCP0"], stdout=PIPE, stderr=PIPE)
 (output, err) = process.communicate()
 exit_code = process.wait()
-port = output.split()[3]
 
 # Error handling
-if port == '':
+if exit_code > 0:
     sys.stderr.write("%s:1:1: error: ECU is not connected via USB.\r\n" % __file__)
     exit(1)
 else:
+    port = output.split()[3]
     sys.stderr.write("%s:1:1: info: ECU is connected via USB. Using virtual port %s\r\n" % (__file__, port))
     sys.stderr.flush()
 
