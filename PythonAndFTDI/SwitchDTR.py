@@ -20,7 +20,7 @@ else:
     sys.stderr.flush()
 
 # Open connection
-ser = serial.Serial(port, 9600)
+ser = serial.Serial(port, 9600, timeout=5)
 if not ser.is_open:
     sys.stderr.write("%s:1:2: error: Could not open virtual port %s\r\n" % (__file__, port))
     exit(1)
@@ -42,9 +42,16 @@ sys.stderr.flush()
 # Redirect byte stream from serial to stdout
 sys.stderr.write("%s:1:4: info: Redirecting test-runner's output to stdout..." % __file__)
 sys.stderr.flush()
-# TODO: Implement this
-sys.stderr.write(" Finished\r\n")
-sys.stderr.flush()
+while True:
+    c = ser.read()
+    if len(c) == 0:
+        sys.stderr.write(" TIMEOUT\r\n%s:1:5: error: Timeout occurred. Didn't receive any character for more than %i seconds.\r\n" % (__file__, ser.timeout))
+        ser.close()
+        exit(1)
+    elif c == 'Z':
+        sys.stderr.write(" Finished\r\n")
+        sys.stderr.flush()
+        break
 
 # Close connection
 ser.close()
